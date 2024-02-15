@@ -12,5 +12,17 @@ class Project_user extends Model
     protected $fillable=[
           'task',
           'payment',
+          'user_id',
+          'project_id',
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->boolean('status');
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('image')->nullable();
             $table->double('budget');
             $table->timestamps();
             $table->unsignedBigInteger('partner_id');

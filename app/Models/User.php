@@ -3,14 +3,18 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia ;
 
     /**
      * The attributes that are mass assignable.
@@ -20,11 +24,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'image',
         'domain',
+        'password',
         'role_id',
     ];
+
+
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,7 +48,19 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
+        'name',
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        
+
     ];
+
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

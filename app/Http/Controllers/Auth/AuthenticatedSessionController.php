@@ -29,9 +29,21 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        $user = Auth::user();
+
+        if ($user->role) {
+            if ($user->role->id === 1) {
+                return redirect()->route('DashAdmin');
+            } elseif ($user->role->id === 2) {
+                return redirect()->route('artistes.art');
+            }
+        }
+        return redirect()->route('login');
 
     }
+
+
+
 
     /**
      * Destroy an authenticated session.
